@@ -18,7 +18,7 @@ import androidx.leanback.widget.Presenter
 import com.example.fitness_tv_frontend.R
 import com.example.fitness_tv_frontend.data.MockRepository
 import com.example.fitness_tv_frontend.model.Badge
-import com.example.fitness_tv_frontend.model.Profile
+
 import com.example.fitness_tv_frontend.model.Workout
 import com.example.fitness_tv_frontend.ui.player.PlayerActivity
 import com.example.fitness_tv_frontend.ui.profile.ProfileFragment
