@@ -131,6 +131,7 @@ class HomeFragment : BrowseSupportFragment() {
         val pgAdapter = ArrayObjectAdapter(simplePresenter)
         pgAdapter.add("Profile")
         pgAdapter.add("Goals")
+        pgAdapter.add("Setup")
         rowsAdapter.add(ListRow(HeaderItem(ROW_PROFILE_GOALS.toLong(), "Profile & Goals"), pgAdapter))
     }
 
@@ -149,6 +150,7 @@ class HomeFragment : BrowseSupportFragment() {
                     when (item) {
                         "Profile" -> openProfile()
                         "Goals" -> openGoals()
+                        "Setup" -> openOnboarding()
                     }
                 }
             }
@@ -170,6 +172,12 @@ class HomeFragment : BrowseSupportFragment() {
         SearchFragment().show(fm, "search")
     }
 
+    private fun openOnboarding() {
+        val ctx = requireContext()
+        val intent = com.example.fitness_tv_frontend.ui.onboarding.OnboardingActivity.intent(ctx)
+        startActivity(intent)
+    }
+
     class StringPresenter : Presenter() {
         override fun onCreateViewHolder(parent: ViewGroup): ViewHolder {
             val card = ImageCardView(parent.context).apply {
@@ -187,7 +195,12 @@ class HomeFragment : BrowseSupportFragment() {
             val card = viewHolder.view as ImageCardView
             val label = item as String
             card.titleText = label
-            card.contentText = if (label == "Profile") "Edit your profile" else "Set your goals"
+            card.contentText = when (label) {
+                "Profile" -> "Edit your profile"
+                "Goals" -> "Set your goals"
+                "Setup" -> "Run onboarding again"
+                else -> "Open"
+            }
         }
 
         override fun onUnbindViewHolder(viewHolder: ViewHolder) {}

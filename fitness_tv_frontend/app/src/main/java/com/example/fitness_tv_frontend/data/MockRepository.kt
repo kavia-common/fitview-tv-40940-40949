@@ -77,13 +77,40 @@ class MockRepository(context: Context) {
         workouts.filter { it.category == "Daily" || it.category == "Continue" }
 
     fun getRecommended(profile: Profile = getProfile()): List<Workout> {
-        // Simple recommendation based on target weekly workouts and user age
-        val intensityPref = when {
+        // Base intensity preference from profile goal
+        val baseIntensity = when {
             profile.goal.weeklyWorkouts >= 5 -> "High"
             profile.goal.weeklyWorkouts >= 3 -> "Medium"
             else -> "Low"
         }
-        return workouts.filter { it.intensity == intensityPref || it.category == "Recommended" }
+
+        // Read onboarding preferences (if any)
+        val goals = prefs.getStringSet("pref_goals", emptySet()) ?: emptySet()
+        val prefDuration = prefs.getInt("pref_duration", 20)
+
+        // Map goals to an intensity bias
+        val biasIntensity = when {
+            goals.contains("weight_loss") || goals.contains("cardio") -> "High"
+            goals.contains("strength") -> "Medium"
+            goals.contains("flexibility") -> "Low"
+            else -> baseIntensity
+        }
+
+        // First pass: match intensity bias or general recommended category
+        var recs = workouts.filter { it.intensity == biasIntensity || it.category == "Recommended" }
+
+        // Second pass: prefer workouts close to selected duration (±7 minutes)
+        val durationWindow = 7
+        val durationFiltered = recs.filter { kotlin.math.abs(it.durationMin - prefDuration) <= durationWindow }
+
+        recs = if (durationFiltered.isNotEmpty()) durationFiltered else recs
+
+        // Fallback: ensure we never return empty
+        if (recs.isEmpty()) {
+            recs = workouts.filter { it.category == "Recommended" }
+                .ifEmpty { workouts }
+        }
+        return recs
     }
 
     fun getBadges(): List<Badge> = badges

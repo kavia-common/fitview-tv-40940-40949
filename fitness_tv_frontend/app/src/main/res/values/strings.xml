@@ -5,6 +5,34 @@
     <string name="profile">Profile</string>
     <string name="goals">Goals</string>
 
+    <!-- Onboarding -->
+    <string name="onboarding_welcome_title">Welcome to FitView TV</string>
+    <string name="onboarding_welcome_desc">Daily workouts, progress charts and personalized recommendations — designed for your TV remote.</string>
+    <string name="onboarding_next">Next</string>
+    <string name="onboarding_skip">Skip setup</string>
+    <string name="onboarding_skip_desc">Use defaults. You can change preferences later in Settings.</string>
+
+    <string name="onboarding_goals_title">Choose your goals</string>
+    <string name="onboarding_goals_desc">Select one or more to tailor your recommendations.</string>
+    <string name="goal_weight_loss">Weight loss</string>
+    <string name="goal_strength">Strength</string>
+    <string name="goal_flexibility">Flexibility</string>
+    <string name="goal_cardio">Cardio</string>
+    <string name="onboarding_continue">Continue</string>
+
+    <string name="onboarding_duration_title">Preferred duration</string>
+    <string name="onboarding_duration_desc">How long do you like to work out?</string>
+    <string name="onboarding_duration_option">%1$d min</string>
+
+    <string name="onboarding_analytics_title">Help us improve</string>
+    <string name="onboarding_analytics_desc">Share anonymous analytics to help make recommendations better. This is optional and can be changed later.</string>
+    <string name="onboarding_analytics_opt_in">Share anonymous analytics</string>
+    <string name="onboarding_finish">Finish</string>
+
+    <string name="onboarding_done_title">All set!</string>
+    <string name="onboarding_done_desc">Your preferences are saved. Enjoy your personalized workouts.</string>
+    <string name="onboarding_start_using_app">Start</string>
+
     <!-- Rating Screen Strings (reserved for future) -->
     <string name="rating_title">Did you like it?</string>
     <string name="rating_message">Your vote helps us recommend more content like this.</string>
