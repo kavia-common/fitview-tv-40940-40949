@@ -1,5 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <!-- Card geometry -->
     <dimen name="card_radius_large">16dp</dimen>
+    <dimen name="card_radius_standard">12dp</dimen>
     <dimen name="card_elevation">6dp</dimen>
+    <dimen name="card_elevation_focused">12dp</dimen>
+
+    <!-- Rail media card sizes (1080p reference) -->
+    <dimen name="card_media_width_1080">320dp</dimen>
+    <dimen name="card_media_height_1080">180dp</dimen>
+
+    <!-- Spacing -->
+    <dimen name="rail_gutter">24dp</dimen>
 </resources>

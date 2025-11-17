@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <!-- Ocean Professional palette -->
+    <!-- Ocean Professional palette (kept for compatibility where referenced) -->
     <color name="ocean_primary">#2563EB</color>
     <color name="ocean_secondary">#F59E0B</color>
     <color name="ocean_surface">#FFFFFF</color>
@@ -8,12 +8,34 @@
     <color name="ocean_text">#E5E7EB</color>
     <color name="ocean_muted">#9CA3AF</color>
 
+    <!-- Dark TV theme core surfaces -->
+    <color name="tv_bg_canvas">#000000</color>
+    <color name="tv_surface">#121212</color>
+    <color name="tv_surface_2">#1A1A1A</color>
+    <color name="divider_dark">#2A2A2A</color>
+
+    <!-- Green accent theme (per design notes) -->
+    <color name="accent_green">#00E676</color>
+    <color name="accent_green_strong">#00C853</color>
+    <color name="accent_green_weak">#8CF5C3</color>
+
+    <!-- Chart/status colors -->
+    <color name="status_success">#00E676</color>
+    <color name="status_warning">#FFC107</color>
+    <color name="status_danger">#FF5252</color>
+    <color name="status_info">#42A5F5</color>
+    <color name="track_neutral">#2E2E2E</color>
+
+    <!-- Focus/glow colors -->
+    <color name="tv_focus_glow">#A600E676</color> <!-- ~65% alpha -->
+    <color name="tv_focus_glow_gold">#A6B68A2E</color>
+
     <!-- TV optimized aliases -->
-    <color name="tv_background">@color/ocean_background</color>
+    <color name="tv_background">@color/tv_bg_canvas</color>
     <color name="tv_overlay">#CC0A0F1E</color>
-    <color name="tv_primary">@color/ocean_text</color>
-    <color name="tv_secondary">@color/ocean_muted</color>
-    <color name="tv_accent">@color/ocean_primary</color>
-    <color name="tv_button_focused">@color/ocean_text</color>
+    <color name="tv_primary">#FFFFFFFF</color>
+    <color name="tv_secondary">#B8B8B8</color>
+    <color name="tv_accent">@color/accent_green</color>
+    <color name="tv_button_focused">@color/tv_primary</color>
     <color name="tv_button_normal">#80FFFFFF</color>
 </resources>

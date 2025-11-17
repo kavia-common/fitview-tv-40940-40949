@@ -20,7 +20,8 @@
             android:hint="@string/search"
             android:singleLine="true"
             android:imeOptions="actionSearch"
-            android:inputType="text" />
+            android:inputType="text"
+            android:contentDescription="@string/search" />
 
         <ImageButton
             android:id="@+id/mic_button"
@@ -50,5 +51,6 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="12dp"
         android:focusable="true"
-        android:focusableInTouchMode="true" />
+        android:focusableInTouchMode="true"
+        android:contentDescription="Search results" />
 </LinearLayout>

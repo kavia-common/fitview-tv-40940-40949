@@ -58,7 +58,7 @@
             android:id="@+id/overlay_calories"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textColor="@color/ocean_secondary"
+            android:textColor="@color/tv_accent"
             android:textSize="18sp"
             android:text="0 kcal" />
 
