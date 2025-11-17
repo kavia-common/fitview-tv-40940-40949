@@ -9,25 +9,46 @@
     <LinearLayout
         android:orientation="horizontal"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:gravity="center_vertical">
 
         <EditText
             android:id="@+id/search_edit"
             android:layout_width="0dp"
             android:layout_weight="1"
             android:layout_height="wrap_content"
-            android:hint="Search workouts"/>
+            android:hint="@string/search"
+            android:singleLine="true"
+            android:imeOptions="actionSearch"
+            android:inputType="text" />
 
-        <Button
+        <ImageButton
             android:id="@+id/mic_button"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="🎤"/>
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:layout_marginStart="12dp"
+            android:focusable="true"
+            android:focusableInTouchMode="true"
+            android:background="?selectableItemBackgroundBorderless"
+            android:contentDescription="@string/search"
+            android:src="@drawable/ic_mic" />
     </LinearLayout>
 
     <Button
         android:id="@+id/search_button"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Search"/>
+        android:text="@string/search"
+        android:layout_marginTop="8dp"
+        android:focusable="true"
+        android:focusableInTouchMode="true" />
+
+    <!-- Results rendered as Leanback cards -->
+    <androidx.leanback.widget.HorizontalGridView
+        android:id="@+id/results_grid"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="12dp"
+        android:focusable="true"
+        android:focusableInTouchMode="true" />
 </LinearLayout>

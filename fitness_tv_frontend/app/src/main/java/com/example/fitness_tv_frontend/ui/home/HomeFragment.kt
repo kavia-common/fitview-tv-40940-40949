@@ -61,6 +61,9 @@ class HomeFragment : BrowseSupportFragment() {
         isHeadersTransitionOnBackEnabled = true
         badgeDrawable = ResourcesCompat.getDrawable(resources, R.drawable.ic_app_badge, requireContext().theme)
 
+        // Use Ocean secondary as the search orb accent to match the theme
+        setSearchAffordanceColor(ContextCompat.getColor(requireContext(), R.color.ocean_secondary))
+
         setOnSearchClickedListener {
             openVoiceSearch()
         }

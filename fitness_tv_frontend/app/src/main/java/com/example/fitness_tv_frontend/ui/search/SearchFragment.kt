@@ -5,19 +5,23 @@ import android.content.ActivityNotFoundException
 import android.content.Intent
 import android.os.Bundle
 import android.speech.RecognizerIntent
+import android.view.KeyEvent
 import android.view.LayoutInflater
+import android.view.inputmethod.EditorInfo
 import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.DialogFragment
 import androidx.leanback.widget.ArrayObjectAdapter
-import androidx.leanback.widget.ListRow
-import androidx.leanback.widget.ListRowPresenter
+import androidx.leanback.widget.ItemBridgeAdapter
 import com.example.fitness_tv_frontend.data.MockRepository
 import com.example.fitness_tv_frontend.databinding.DialogSearchBinding
+import com.example.fitness_tv_frontend.model.Workout
+import com.example.fitness_tv_frontend.ui.player.PlayerActivity
 import com.example.fitness_tv_frontend.ui.widgets.WorkoutCardPresenter
 import java.util.Locale
 
 /**
  * Dialog fragment providing voice search and text input filtering for workouts.
+ * Renders results using a Leanback HorizontalGridView bound via ItemBridgeAdapter.
  */
 class SearchFragment : DialogFragment() {
 
@@ -27,20 +31,44 @@ class SearchFragment : DialogFragment() {
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
         binding = DialogSearchBinding.inflate(LayoutInflater.from(context))
 
-        val resultsAdapter = ArrayObjectAdapter(ListRowPresenter())
-        val innerAdapter = ArrayObjectAdapter(WorkoutCardPresenter(requireContext()))
-        resultsAdapter.add(ListRow(innerAdapter))
+        // Results adapter using Workout cards with click -> PlayerActivity
+        val resultsAdapter = ArrayObjectAdapter(
+            WorkoutCardPresenter(requireContext()) { workout ->
+                launchPlayer(workout)
+            }
+        )
+        val bridgeAdapter = ItemBridgeAdapter(resultsAdapter)
+        binding.resultsGrid.adapter = bridgeAdapter
 
         fun updateResults(q: String) {
-            innerAdapter.clear()
-            repo.searchWorkouts(q).forEach { innerAdapter.add(it) }
+            resultsAdapter.clear()
+            repo.searchWorkouts(q).forEach { resultsAdapter.add(it) }
+            // ensure focus moves to results on TV after search
+            if (resultsAdapter.size() > 0) {
+                binding.resultsGrid.requestFocus()
+            }
         }
 
+        // Button click search
         binding.searchButton.setOnClickListener {
-            val q = binding.searchEdit.text?.toString() ?: ""
+            val q = binding.searchEdit.text?.toString().orEmpty()
             updateResults(q)
         }
 
+        // IME "Search" on keyboard enter
+        binding.searchEdit.setOnEditorActionListener { _, actionId, event ->
+            if (actionId == EditorInfo.IME_ACTION_SEARCH ||
+                (event?.keyCode == KeyEvent.KEYCODE_ENTER && event.action == KeyEvent.ACTION_UP)
+            ) {
+                val q = binding.searchEdit.text?.toString().orEmpty()
+                updateResults(q)
+                true
+            } else {
+                false
+            }
+        }
+
+        // Mic/voice search
         binding.micButton.setOnClickListener {
             val intent = Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH).apply {
                 putExtra(RecognizerIntent.EXTRA_LANGUAGE_MODEL, RecognizerIntent.LANGUAGE_MODEL_FREE_FORM)
@@ -54,11 +82,22 @@ class SearchFragment : DialogFragment() {
             }
         }
 
+        // Start with all results for discoverability
+        updateResults("")
+
         return AlertDialog.Builder(requireContext())
             .setTitle("Search")
             .setView(binding.root)
             .setPositiveButton("Close", null)
             .create()
+    }
+
+    private fun launchPlayer(workout: Workout) {
+        startActivity(
+            Intent(requireContext(), PlayerActivity::class.java).apply {
+                putExtra(PlayerActivity.EXTRA_WORKOUT, workout)
+            }
+        )
     }
 
     @Deprecated("Deprecated in Java")
@@ -68,6 +107,12 @@ class SearchFragment : DialogFragment() {
             val results = data?.getStringArrayListExtra(RecognizerIntent.EXTRA_RESULTS)
             val q = results?.firstOrNull().orEmpty()
             binding.searchEdit.setText(q)
+            // auto-run the search with recognized query for TV convenience
+            val text = binding.searchEdit.text?.toString().orEmpty()
+            if (text.isNotEmpty()) {
+                // Trigger search button programmatically
+                binding.searchButton.performClick()
+            }
         }
     }
 }

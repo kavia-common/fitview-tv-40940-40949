@@ -34,7 +34,8 @@ class ProgressChartPresenter(private val context: Context) : Presenter() {
         val height = 260
         val bmp = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888)
         val c = Canvas(bmp)
-        c.drawColor(Color.parseColor("#0F1B2B"))
+        // Use the TV background from Ocean theme for consistency
+        c.drawColor(androidx.core.content.ContextCompat.getColor(context, R.color.tv_background))
 
         val maxCal = max(1, entries.maxOfOrNull { it.calories } ?: 1)
         val barWidth = 90f
