@@ -1,9 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <!-- Base application theme for Android TV -->
-    <style name="AppTheme" parent="Theme.Leanback">
-        <!-- Customize your theme here -->
+    <!-- Base application theme for Android TV with Ocean Professional styling -->
+    <style name="AppTheme" parent="Theme.Leanback.Browse">
         <item name="android:windowBackground">@color/tv_background</item>
-        <item name="android:colorPrimary">@color/tv_accent</item>
+        <item name="android:colorPrimary">@color/ocean_primary</item>
+        <item name="android:colorAccent">@color/ocean_secondary</item>
+        <item name="browseTitleViewStyle">@style/OceanBrowseTitle</item>
+        <!-- searchOrbViewStyle removed to avoid missing attributes on current leanback -->
+    </style>
+
+    <style name="OceanBrowseTitle" parent="Widget.Leanback.TitleView">
+        <item name="android:textColor">@color/ocean_text</item>
+        <item name="android:background">#001122</item>
     </style>
 </resources>

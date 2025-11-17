@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/player_root"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/tv_background">
+
+    <androidx.media3.ui.PlayerView
+        android:id="@+id/player_view"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:keepScreenOn="true"
+        android:focusable="true"
+        android:focusableInTouchMode="true"
+        android:background="@color/tv_background"
+        android:contentDescription="@string/app_name"
+        app:use_controller="false" />
+
+    <LinearLayout
+        android:id="@+id/overlay"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:padding="16dp"
+        android:layout_gravity="top|start"
+        android:layout_margin="24dp"
+        android:background="@drawable/bg_overlay_rounded">
+
+        <TextView
+            android:id="@+id/overlay_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/tv_primary"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            android:maxLines="1"
+            android:ellipsize="end"
+            android:text="Workout Title" />
+
+        <Space
+            android:layout_width="16dp"
+            android:layout_height="1dp"/>
+
+        <TextView
+            android:id="@+id/overlay_time"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/tv_secondary"
+            android:textSize="18sp"
+            android:text="00:00" />
+
+        <Space
+            android:layout_width="16dp"
+            android:layout_height="1dp"/>
+
+        <TextView
+            android:id="@+id/overlay_calories"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/ocean_secondary"
+            android:textSize="18sp"
+            android:text="0 kcal" />
+
+    </LinearLayout>
+
+</FrameLayout>

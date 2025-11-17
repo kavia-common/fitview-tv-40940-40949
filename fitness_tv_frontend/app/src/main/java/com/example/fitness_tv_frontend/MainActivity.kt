@@ -1,43 +1,41 @@
 package com.example.fitness_tv_frontend
 
+import android.content.Intent
 import android.os.Bundle
-import androidx.fragment.app.FragmentActivity
 import android.view.KeyEvent
-import android.widget.TextView
+import androidx.fragment.app.FragmentActivity
+import com.example.fitness_tv_frontend.ui.home.HomeFragment
 
 /**
- * Main Activity for Android TV
- * Extends FragmentActivity for Leanback compatibility
+ * Main Activity hosting the HomeFragment (Leanback Browse) for Android TV.
+ * Provides single-activity navigation and TV remote handling.
  */
 class MainActivity : FragmentActivity() {
-
-    private lateinit var titleText: TextView
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-        
-        titleText = findViewById(R.id.title_text)
-        titleText.text = "fitness_tv_frontend"
-        
-        // TODO: Initialize your rating screen components here
-        // setupRatingOverlay()
+
+        if (supportFragmentManager.findFragmentByTag("home") == null) {
+            supportFragmentManager.beginTransaction()
+                .replace(R.id.main_container, HomeFragment.newInstance(), "home")
+                .commitNow()
+        }
     }
 
     override fun onKeyDown(keyCode: Int, event: KeyEvent?): Boolean {
-        // Handle TV remote control inputs
-        return when (keyCode) {
-            KeyEvent.KEYCODE_DPAD_CENTER,
-            KeyEvent.KEYCODE_ENTER -> {
-                // Handle SELECT/OK button
-                true
-            }
-            KeyEvent.KEYCODE_BACK -> {
-                // Handle BACK button
-                finish()
-                true
-            }
-            else -> super.onKeyDown(keyCode, event)
-        }
+        // Delegate to fragments when needed; keep BACK handling default
+        return super.onKeyDown(keyCode, event)
+    }
+
+    // PUBLIC_INTERFACE
+    fun openVoiceSearch() {
+        // Trigger the voice/search fragment (handled within HomeFragment UI)
+        // Keeping as placeholder in case activity-level search is needed later.
+    }
+
+    // PUBLIC_INTERFACE
+    fun openSettings() {
+        // Placeholder for future settings screen.
     }
 }
