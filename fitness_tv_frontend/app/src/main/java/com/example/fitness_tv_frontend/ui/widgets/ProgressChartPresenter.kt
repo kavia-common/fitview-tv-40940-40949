@@ -43,7 +43,7 @@ class ProgressChartPresenter(private val context: Context) : Presenter() {
         val bottomPad = 40f
 
         val barPaint = Paint(Paint.ANTI_ALIAS_FLAG).apply {
-            color = context.getColor(R.color.ocean_secondary)
+            color = androidx.core.content.ContextCompat.getColor(context, R.color.ocean_secondary)
         }
         val axisPaint = Paint(Paint.ANTI_ALIAS_FLAG).apply {
             color = Color.parseColor("#55FFFFFF")

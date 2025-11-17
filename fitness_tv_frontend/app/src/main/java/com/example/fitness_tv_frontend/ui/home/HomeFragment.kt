@@ -5,8 +5,9 @@ import android.graphics.Color
 import android.os.Bundle
 import android.view.View
 import android.view.ViewGroup
-import androidx.core.os.bundleOf
-import androidx.fragment.app.FragmentActivity
+
+import androidx.core.content.ContextCompat
+import androidx.core.content.res.ResourcesCompat
 import androidx.leanback.app.BrowseSupportFragment
 import androidx.leanback.widget.ArrayObjectAdapter
 import androidx.leanback.widget.HeaderItem
@@ -55,10 +56,10 @@ class HomeFragment : BrowseSupportFragment() {
 
     private fun setupUi() {
         title = resources.getString(R.string.app_name)
-        brandColor = resources.getColor(R.color.ocean_primary, null)
+        brandColor = ContextCompat.getColor(requireContext(), R.color.ocean_primary)
         headersState = HEADERS_ENABLED
         isHeadersTransitionOnBackEnabled = true
-        badgeDrawable = resources.getDrawable(R.drawable.ic_app_badge, null)
+        badgeDrawable = ResourcesCompat.getDrawable(resources, R.drawable.ic_app_badge, requireContext().theme)
 
         setOnSearchClickedListener {
             openVoiceSearch()
@@ -123,7 +124,7 @@ class HomeFragment : BrowseSupportFragment() {
             override fun onBindViewHolder(viewHolder: ViewHolder, item: Any) {}
             override fun onUnbindViewHolder(viewHolder: ViewHolder) {}
         }
-        val simplePresenter = object : StringPresenter()
+        val simplePresenter = StringPresenter()
         val pgAdapter = ArrayObjectAdapter(simplePresenter)
         pgAdapter.add("Profile")
         pgAdapter.add("Goals")
