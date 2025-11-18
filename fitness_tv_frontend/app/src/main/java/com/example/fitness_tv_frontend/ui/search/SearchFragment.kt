@@ -29,7 +29,7 @@ class SearchFragment : DialogFragment() {
     private val repo by lazy { MockRepository(requireContext()) }
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
-        binding = DialogSearchBinding.inflate(LayoutInflater.from(context))
+        binding = DialogSearchBinding.inflate(LayoutInflater.from(requireContext()))
 
         // Results adapter using Workout cards with click -> PlayerActivity
         val resultsAdapter = ArrayObjectAdapter(

@@ -18,7 +18,7 @@ class ProfileFragment : DialogFragment() {
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
         val repo = MockRepository(requireContext())
         val profile = repo.getProfile()
-        val binding = DialogProfileBinding.inflate(LayoutInflater.from(context))
+        val binding = DialogProfileBinding.inflate(LayoutInflater.from(requireContext()))
 
         binding.nameEdit.setText(profile.name)
         binding.ageEdit.setText(profile.age.toString())

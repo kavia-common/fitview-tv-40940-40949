@@ -19,11 +19,11 @@ class WelcomeOnboardingFragment : GuidedStepSupportFragment() {
     }
 
     override fun onCreateActions(actions: MutableList<GuidedAction>, savedInstanceState: Bundle?) {
-        actions += GuidedAction.Builder(context)
+        actions += GuidedAction.Builder(requireContext())
             .id(ACTION_NEXT)
             .title(getString(R.string.onboarding_next))
             .build()
-        actions += GuidedAction.Builder(context)
+        actions += GuidedAction.Builder(requireContext())
             .id(ACTION_SKIP)
             .title(getString(R.string.onboarding_skip))
             .description(getString(R.string.onboarding_skip_desc))
@@ -84,7 +84,7 @@ class GoalsOnboardingFragment : GuidedStepSupportFragment() {
 
         // Checkboxes for each goal
         for (g in goals) {
-            actions += GuidedAction.Builder(context)
+            actions += GuidedAction.Builder(requireContext())
                 .id(g.id.hashCode().toLong())
                 .title(getString(g.labelRes))
                 .checkSetId(GuidedAction.CHECKBOX_CHECK_SET_ID)
@@ -93,7 +93,7 @@ class GoalsOnboardingFragment : GuidedStepSupportFragment() {
         }
 
         // Continue
-        actions += GuidedAction.Builder(context)
+        actions += GuidedAction.Builder(requireContext())
             .id(ACTION_CONTINUE)
             .title(getString(R.string.onboarding_continue))
             .build()
@@ -153,7 +153,7 @@ class DurationOnboardingFragment : GuidedStepSupportFragment() {
         val current = prefs.getPreferredDuration()
 
         durations.forEach { minutes ->
-            actions += GuidedAction.Builder(context)
+            actions += GuidedAction.Builder(requireContext())
                 .id(minutes.toLong())
                 .title(getString(R.string.onboarding_duration_option, minutes))
                 .checkSetId(GuidedAction.DEFAULT_CHECK_SET_ID)
@@ -161,7 +161,7 @@ class DurationOnboardingFragment : GuidedStepSupportFragment() {
                 .build()
         }
 
-        actions += GuidedAction.Builder(context)
+        actions += GuidedAction.Builder(requireContext())
             .id(ACTION_CONTINUE)
             .title(getString(R.string.onboarding_continue))
             .build()
@@ -208,14 +208,14 @@ class AnalyticsOnboardingFragment : GuidedStepSupportFragment() {
     override fun onCreateActions(actions: MutableList<GuidedAction>, savedInstanceState: Bundle?) {
         val prefs = OnboardingPrefs(requireContext())
         val checked = prefs.getAnalyticsOptIn()
-        actions += GuidedAction.Builder(context)
+        actions += GuidedAction.Builder(requireContext())
             .id(ACTION_OPT_IN)
             .title(getString(R.string.onboarding_analytics_opt_in))
             .checkSetId(GuidedAction.CHECKBOX_CHECK_SET_ID)
             .checked(checked)
             .build()
 
-        actions += GuidedAction.Builder(context)
+        actions += GuidedAction.Builder(requireContext())
             .id(ACTION_FINISH)
             .title(getString(R.string.onboarding_finish))
             .build()
@@ -258,7 +258,7 @@ class FinishOnboardingFragment : GuidedStepSupportFragment() {
     }
 
     override fun onCreateActions(actions: MutableList<GuidedAction>, savedInstanceState: Bundle?) {
-        actions += GuidedAction.Builder(context)
+        actions += GuidedAction.Builder(requireContext())
             .id(ACTION_START)
             .title(getString(R.string.onboarding_start_using_app))
             .build()

@@ -17,7 +17,7 @@ class GoalsFragment : DialogFragment() {
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
         val repo = MockRepository(requireContext())
         val current = repo.getProfile().goal
-        val binding = DialogGoalsBinding.inflate(LayoutInflater.from(context))
+        val binding = DialogGoalsBinding.inflate(LayoutInflater.from(requireContext()))
 
         binding.weeklyWorkoutsEdit.setText(current.weeklyWorkouts.toString())
         binding.targetCaloriesEdit.setText(current.targetCaloriesPerWeek.toString())
