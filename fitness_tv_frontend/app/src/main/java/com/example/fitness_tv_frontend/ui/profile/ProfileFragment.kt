@@ -3,7 +3,7 @@ package com.example.fitness_tv_frontend.ui.profile
 import android.app.Dialog
 import android.os.Bundle
 import android.view.LayoutInflater
-import androidx.appcompat.app.AlertDialog
+import android.app.AlertDialog
 import androidx.fragment.app.DialogFragment
 import com.example.fitness_tv_frontend.data.MockRepository
 import com.example.fitness_tv_frontend.databinding.DialogProfileBinding

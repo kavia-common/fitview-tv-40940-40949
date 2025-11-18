@@ -8,7 +8,7 @@ import android.speech.RecognizerIntent
 import android.view.KeyEvent
 import android.view.LayoutInflater
 import android.view.inputmethod.EditorInfo
-import androidx.appcompat.app.AlertDialog
+import android.app.AlertDialog
 import androidx.fragment.app.DialogFragment
 import androidx.leanback.widget.ArrayObjectAdapter
 import androidx.leanback.widget.ItemBridgeAdapter

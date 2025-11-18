@@ -6,7 +6,7 @@ import android.os.Handler
 import android.os.Looper
 import android.view.View
 import android.widget.TextView
-import androidx.appcompat.app.AppCompatActivity
+import androidx.fragment.app.FragmentActivity
 import androidx.media3.common.MediaItem
 import androidx.media3.exoplayer.ExoPlayer
 import androidx.media3.ui.PlayerView
@@ -17,7 +17,7 @@ import com.example.fitness_tv_frontend.model.Workout
  * PlayerActivity plays a sample workout (HLS/DASH or local).
  * Displays overlay with title, elapsed time, and estimated calories.
  */
-class PlayerActivity : AppCompatActivity() {
+class PlayerActivity : FragmentActivity() {
 
     private var player: ExoPlayer? = null
     private lateinit var playerView: PlayerView
