@@ -12,6 +12,7 @@ import androidx.media3.exoplayer.ExoPlayer
 import androidx.media3.ui.PlayerView
 import com.example.fitness_tv_frontend.R
 import com.example.fitness_tv_frontend.model.Workout
+import kotlin.math.roundToInt
 
 /**
  * PlayerActivity plays a sample workout (HLS/DASH or local).
@@ -74,16 +75,29 @@ class PlayerActivity : FragmentActivity() {
         val sec = seconds % 60
         timeTv.text = String.format("%02d:%02d", min, sec)
 
-        val cal = workout?.caloriesEstimate ?: 100
-        // simple proportional estimate based on elapsed vs duration
-        val duration = (workout?.durationMin ?: 15) * 60
-        val est = if (duration > 0) (seconds.toFloat() / duration * cal).toInt() else 0
+        // Calorie estimate: keep in healthy range and present as integer kcal
+        val totalCal = (workout?.caloriesEstimate ?: 100).coerceIn(20, 1200)
+        val durationSec = ((workout?.durationMin ?: 15) * 60).coerceAtLeast(1)
+        val est = ((seconds.toFloat() / durationSec) * totalCal).coerceIn(0f, totalCal.toFloat()).roundToInt()
         caloriesTv.text = "$est kcal"
+        overlay.contentDescription = "Time ${timeTv.text}, calories $est kilocalories"
     }
 
     override fun onStart() {
         super.onStart()
         initPlayer()
+    }
+
+    override fun onResume() {
+        super.onResume()
+        // Resume ticker if returning from background
+        handler.removeCallbacks(ticker)
+        handler.post(ticker)
+    }
+
+    override fun onPause() {
+        super.onPause()
+        handler.removeCallbacks(ticker)
     }
 
     override fun onStop() {

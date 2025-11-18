@@ -28,9 +28,8 @@ import com.example.fitness_tv_frontend.ui.widgets.WorkoutCardPresenter
 
 /**
  * Home screen fragment using BrowseSupportFragment with hero metrics & rows.
- * - Top hero: ring gauges + mini bar
- * - Rails: Daily/Continue, Recommended, Progress, Badges, Profile & Goals
- * - DPAD friendly with clear focus and accessibility labels
+ * - Rails order: Dashboard Hero, Daily & Continue, Recommended, Progress (7 days), Badges, Profile & Goals
+ * - DPAD friendly with focus feedback and accessibility labels
  */
 class HomeFragment : BrowseSupportFragment() {
 
@@ -57,6 +56,12 @@ class HomeFragment : BrowseSupportFragment() {
         setupEventListeners()
     }
 
+    override fun onResume() {
+        super.onResume()
+        // Rebuild rows to reflect updated profile/goals and recommendations after dialogs/onboarding
+        refreshRows()
+    }
+
     private fun setupUi() {
         title = resources.getString(R.string.app_name)
         // Accent and header styling per dark theme
@@ -74,7 +79,7 @@ class HomeFragment : BrowseSupportFragment() {
     }
 
     private fun buildRows() {
-        // Increase row shadow to emphasize rails
+        // Increase row shadow to emphasize rails and enable focus effect
         val listRowPresenter = ListRowPresenter().apply {
             shadowEnabled = true
             selectEffectEnabled = true
@@ -82,9 +87,10 @@ class HomeFragment : BrowseSupportFragment() {
         rowsAdapter = ArrayObjectAdapter(listRowPresenter)
         adapter = rowsAdapter
 
+        val profile = repo.getProfile()
+
         // Row 0: Hero metrics/summary
         val heroAdapter = ArrayObjectAdapter(HeroMetricsPresenter(requireContext()))
-        val profile = repo.getProfile()
         val heroData = HeroMetricsPresenter.HeroData(
             activePercent = 92,
             alerts = 3,
@@ -92,7 +98,7 @@ class HomeFragment : BrowseSupportFragment() {
             recent = repo.recentProgress()
         )
         heroAdapter.add(heroData)
-        rowsAdapter.add(ListRow(HeaderItem(ROW_HERO.toLong(), "Dashboard"), heroAdapter))
+        rowsAdapter.add(ListRow(HeaderItem(ROW_HERO.toLong(), "Dashboard Hero"), heroAdapter))
 
         // Row 1: Daily / Continue
         val dailyAdapter = ArrayObjectAdapter(WorkoutCardPresenter(requireContext()))
@@ -102,7 +108,7 @@ class HomeFragment : BrowseSupportFragment() {
         // Row 2: Recommended Workouts
         val recAdapter = ArrayObjectAdapter(WorkoutCardPresenter(requireContext()))
         repo.getRecommended(profile).forEach { recAdapter.add(it) }
-        rowsAdapter.add(ListRow(HeaderItem(ROW_RECOMMENDED.toLong(), "Recommended For You"), recAdapter))
+        rowsAdapter.add(ListRow(HeaderItem(ROW_RECOMMENDED.toLong(), "Recommended"), recAdapter))
 
         // Row 3: Progress Charts (single card with chart)
         val chartAdapter = ArrayObjectAdapter(ProgressChartPresenter(requireContext()))
@@ -117,6 +123,13 @@ class HomeFragment : BrowseSupportFragment() {
                     isFocusableInTouchMode = true
                     setMainImageDimensions(300, 200)
                     setBackgroundColor(ContextCompat.getColor(requireContext(), R.color.tv_surface_2))
+                }
+                // Focus feedback similar to media cards
+                cardView.onFocusChangeListener = View.OnFocusChangeListener { v, hasFocus ->
+                    v.animate().scaleX(if (hasFocus) 1.06f else 1f)
+                        .scaleY(if (hasFocus) 1.06f else 1f)
+                        .setDuration(140)
+                        .start()
                 }
                 return ViewHolder(cardView)
             }
@@ -140,8 +153,19 @@ class HomeFragment : BrowseSupportFragment() {
         val pgAdapter = ArrayObjectAdapter(StringPresenter())
         pgAdapter.add("Profile")
         pgAdapter.add("Goals")
-        pgAdapter.add("Setup")
         rowsAdapter.add(ListRow(HeaderItem(ROW_PROFILE_GOALS.toLong(), "Profile & Goals"), pgAdapter))
+
+        // Initial focus hint: request focus onto the fragment root; Leanback will manage row/card focus on DPAD
+        view?.post {
+            view?.requestFocus()
+        }
+    }
+
+    private fun refreshRows() {
+        // Recreate to ensure recommendation rail reflects latest preferences
+        adapter = null
+        buildRows()
+        setupEventListeners()
     }
 
     private fun setupEventListeners() {
@@ -159,7 +183,6 @@ class HomeFragment : BrowseSupportFragment() {
                     when (item) {
                         "Profile" -> openProfile()
                         "Goals" -> openGoals()
-                        "Setup" -> openOnboarding()
                     }
                 }
             }
@@ -179,12 +202,6 @@ class HomeFragment : BrowseSupportFragment() {
     private fun openVoiceSearch() {
         val fm = parentFragmentManager
         SearchFragment().show(fm, "search")
-    }
-
-    private fun openOnboarding() {
-        val ctx = requireContext()
-        val intent = com.example.fitness_tv_frontend.ui.onboarding.OnboardingActivity.intent(ctx)
-        startActivity(intent)
     }
 
     class StringPresenter : Presenter() {
@@ -207,7 +224,6 @@ class HomeFragment : BrowseSupportFragment() {
             card.contentText = when (label) {
                 "Profile" -> "Edit your profile"
                 "Goals" -> "Set your goals"
-                "Setup" -> "Run onboarding again"
                 else -> "Open"
             }
             card.contentDescription = "$label. ${card.contentText}"

@@ -42,7 +42,7 @@ class ProgressChartPresenter(private val context: Context) : Presenter() {
         // Background surface
         c.drawColor(ContextCompat.getColor(context, R.color.tv_surface))
 
-        val maxCal = max(1, entries.maxOfOrNull { it.calories } ?: 1)
+        val maxCalories = max(1, entries.maxOfOrNull { it.calories } ?: 1)
         val barWidth = 50f
         val gap = 22f
         val leftPad = 40f
@@ -71,7 +71,7 @@ class ProgressChartPresenter(private val context: Context) : Presenter() {
         entries.forEachIndexed { index, entry ->
             val x = leftPad + index * (barWidth + gap)
             val available = height - bottomPad - topPad
-            val barHeight = (entry.calories.toFloat() / maxCal) * available
+            val barHeight = (entry.calories.toFloat() / maxCalories) * available
             val top = height - bottomPad - barHeight
             // background column
             val bgRect = RectF(x, topPad + 6f, x + barWidth, height - bottomPad)
@@ -85,7 +85,9 @@ class ProgressChartPresenter(private val context: Context) : Presenter() {
 
         val card = viewHolder.view as ImageCardView
         card.mainImageView.setImageBitmap(bmp)
-        card.contentDescription = "Weekly calories bar chart for last seven days."
+        val maxDescCal = max(1, entries.maxOfOrNull { it.calories } ?: 1)
+        val minDescCal = entries.minOfOrNull { it.calories } ?: 0
+        card.contentDescription = "Weekly calories bar chart for last seven days. Max $maxDescCal, min $minDescCal."
     }
 
     override fun onUnbindViewHolder(viewHolder: ViewHolder) {

@@ -96,14 +96,23 @@ class MockRepository(context: Context) {
             else -> baseIntensity
         }
 
-        // First pass: match intensity bias or general recommended category
-        var recs = workouts.filter { it.intensity == biasIntensity || it.category == "Recommended" }
-
-        // Second pass: prefer workouts close to selected duration (±7 minutes)
+        // Score and sort by relevance:
+        // +2 match intensity bias, +1 if category is Recommended, +duration closeness (<=7 -> +2, <=14 -> +1)
         val durationWindow = 7
-        val durationFiltered = recs.filter { kotlin.math.abs(it.durationMin - prefDuration) <= durationWindow }
+        val scored = workouts.map { w ->
+            val intensityScore = if (w.intensity == biasIntensity) 2 else 0
+            val categoryScore = if (w.category == "Recommended") 1 else 0
+            val durationDelta = kotlin.math.abs(w.durationMin - prefDuration)
+            val durationScore = if (durationDelta <= durationWindow) 2 else if (durationDelta <= durationWindow * 2) 1 else 0
+            val total = intensityScore + categoryScore + durationScore
+            w to total
+        }
 
-        recs = if (durationFiltered.isNotEmpty()) durationFiltered else recs
+        var recs = scored
+            .sortedWith(compareByDescending<Pair<Workout, Int>> { it.second }
+                .thenBy { kotlin.math.abs(it.first.durationMin - prefDuration) })
+            .map { it.first }
+            .filter { it.category == "Recommended" || it.intensity == biasIntensity }
 
         // Fallback: ensure we never return empty
         if (recs.isEmpty()) {

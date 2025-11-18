@@ -9,6 +9,11 @@
     <!-- Rail media card sizes (1080p reference) -->
     <dimen name="card_media_width_1080">320dp</dimen>
     <dimen name="card_media_height_1080">180dp</dimen>
+    <!-- Additional references for potential scaling (used by presenters if needed) -->
+    <dimen name="card_media_width_720">272dp</dimen>
+    <dimen name="card_media_height_720">153dp</dimen>
+    <dimen name="card_media_width_4k">420dp</dimen>
+    <dimen name="card_media_height_4k">236dp</dimen>
 
     <!-- Spacing -->
     <dimen name="rail_gutter">24dp</dimen>

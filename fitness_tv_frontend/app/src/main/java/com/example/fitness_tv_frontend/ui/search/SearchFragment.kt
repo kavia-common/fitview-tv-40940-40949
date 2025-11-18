@@ -9,9 +9,11 @@ import android.view.KeyEvent
 import android.view.LayoutInflater
 import android.view.inputmethod.EditorInfo
 import android.app.AlertDialog
+import android.widget.Toast
 import androidx.fragment.app.DialogFragment
 import androidx.leanback.widget.ArrayObjectAdapter
 import androidx.leanback.widget.ItemBridgeAdapter
+import com.example.fitness_tv_frontend.R
 import com.example.fitness_tv_frontend.data.MockRepository
 import com.example.fitness_tv_frontend.databinding.DialogSearchBinding
 import com.example.fitness_tv_frontend.model.Workout
@@ -43,7 +45,7 @@ class SearchFragment : DialogFragment() {
         fun updateResults(q: String) {
             resultsAdapter.clear()
             repo.searchWorkouts(q).forEach { resultsAdapter.add(it) }
-            // ensure focus moves to results on TV after search
+            // ensure focus moves to first result on TV after search
             if (resultsAdapter.size() > 0) {
                 binding.resultsGrid.requestFocus()
             }
@@ -78,7 +80,9 @@ class SearchFragment : DialogFragment() {
             try {
                 startActivityForResult(intent, 2001)
             } catch (_: ActivityNotFoundException) {
-                // No speech recognizer available; ignore
+                // No speech recognizer available; fallback to text search
+                Toast.makeText(requireContext(), getString(R.string.voice_unavailable), Toast.LENGTH_SHORT).show()
+                binding.searchEdit.requestFocus()
             }
         }
 
@@ -110,8 +114,9 @@ class SearchFragment : DialogFragment() {
             // auto-run the search with recognized query for TV convenience
             val text = binding.searchEdit.text?.toString().orEmpty()
             if (text.isNotEmpty()) {
-                // Trigger search button programmatically
+                // Trigger search button programmatically and move focus to results
                 binding.searchButton.performClick()
+                binding.resultsGrid.requestFocus()
             }
         }
     }

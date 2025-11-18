@@ -2,6 +2,7 @@
 <resources>
     <string name="app_name">fitness_tv_frontend</string>
     <string name="search">Search</string>
+    <string name="voice_unavailable">Voice search unavailable. Use text search.</string>
     <string name="profile">Profile</string>
     <string name="goals">Goals</string>
 
